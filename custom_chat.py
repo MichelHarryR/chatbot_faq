@@ -38,7 +38,7 @@ def chunk_data(data, chunk_size=256, chunk_overlap=20):
 
 # create embeddings using OpenAIEmbeddings() and save them in a Chroma vector store
 def create_embeddings(chunks):
-    embeddings = OpenAIEmbeddings(model='text-embedding-3-large', dimensions=3072)  # 512 works as well
+    embeddings = OpenAIEmbeddings(model='text-embedding-3-large', dimensions=3072, openai_api_key=st.secrets["OPENAI_API_KEY"])  # 512 works as well
     vector_store = Chroma.from_documents(chunks, embeddings)
     return vector_store
 
@@ -47,7 +47,7 @@ def ask_and_get_answer(vector_store, q, k=3):
     from langchain.chains import RetrievalQA
     from langchain_openai import ChatOpenAI
     
-    llm = ChatOpenAI(model='gpt-4o', temperature=1.2)
+    llm = ChatOpenAI(model='gpt-4o', temperature=1.2, openai_api_key=st.secrets["OPENAI_API_KEY"])
     
     retriever = vector_store.as_retriever(search_type='mmr', search_kwargs={'k': k}) #similarity
     chain = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever, return_source_documents=True)
@@ -84,10 +84,10 @@ if __name__ == "__main__":
     import os
 
     # loading the OpenAI api key from .env
-    from dotenv import load_dotenv, find_dotenv
-    load_dotenv(find_dotenv(), override=True)
+    #from dotenv import load_dotenv, find_dotenv
+    #load_dotenv(find_dotenv(), override=True)
 
-    api_key = os.getenv("OPENAI_API_KEY")
+    #api_key = os.getenv("OPENAI_API_KEY")
     
     # Initialize chat history
     if "messages" not in st.session_state:

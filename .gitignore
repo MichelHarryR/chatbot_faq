@@ -1,3 +1,7 @@
 #on n'envoie pas le dossier customchat
 customchat/
+#on n'envoie pas le dossier .streamlit
+.streamlit/
+
+#on n'envoie pas le fichier .env
 .env
