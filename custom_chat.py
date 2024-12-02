@@ -1,5 +1,10 @@
 # Install all libraries by running in the terminal: pip install -q -r ./requirements.txt
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 import streamlit as st
+import sqlite3
 import time
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma

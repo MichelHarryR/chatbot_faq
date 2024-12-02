@@ -9,3 +9,4 @@ python-dotenv
 docx2txt
 pypdf
 chromadb
+pysqlite3-binary
