@@ -1,13 +1,22 @@
 # Install all libraries by running in the terminal: pip install -q -r ./requirements.txt
+# CODE UNIQUEMENT EN PROD SUR STREAMLIT
 __import__('pysqlite3')
 import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 import streamlit as st
-import sqlite3
+import sqlite3 #UNIQUEMENT EN PROD SUR STREAMLIT
 import time
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
+
+import os
+# Définir le chemin du répertoire chroma_db relatif au script
+persist_directory = os.path.join(os.path.dirname(__file__), "chroma_db")
+# Créer le répertoire s'il n'existe pas
+os.makedirs(persist_directory, exist_ok=True)
+
+
 
 # loading PDF, DOCX and TXT files as LangChain Documents
 def load_document(file):
@@ -44,7 +53,7 @@ def chunk_data(data, chunk_size=256, chunk_overlap=20):
 # create embeddings using OpenAIEmbeddings() and save them in a Chroma vector store
 def create_embeddings(chunks):
     embeddings = OpenAIEmbeddings(model='text-embedding-3-large', dimensions=3072, openai_api_key=st.secrets["OPENAI_API_KEY"])  # 512 works as well
-    vector_store = Chroma.from_documents(chunks, embeddings)
+    vector_store = Chroma.from_documents(chunks, embeddings, persist_directory=persist_directory)
     return vector_store
 
 

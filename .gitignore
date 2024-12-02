@@ -5,3 +5,5 @@ customchat/
 
 #on n'envoie pas le fichier .env
 .env
+
+chroma_db/
