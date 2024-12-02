@@ -107,8 +107,18 @@ if __name__ == "__main__":
     if "messages" not in st.session_state:
         st.session_state.messages = []
     
+    
+    gauche , milieu, droite = st.columns([0.1,0.03,0.1])
+    
+    with milieu:
+        st.image("https://www.insi.mg/wp-content/uploads/2022/07/cropped-Modiff-B.png", use_container_width=True)
+    
+    gauche1 , milieu1, droite1 = st.columns([1,6,1])
+    with milieu1: 
+        st.subheader("Discutez avec l'IA : Votre Assistant à l'INSI")
+    
     #st.image('img.png')
-    st.subheader('Bienvenu sur le CHATBOT DE INSI')
+    
     chunk_size = 512
     k = 10
     file_name = os.path.join('./', 'ia.txt')
@@ -156,10 +166,10 @@ if __name__ == "__main__":
             REPONSE = answer
             
             # Recuperation du Bot INSI
-            with st.chat_message("assistant"):
+            with st.chat_message("assistant", avatar='https://www.insi.mg/wp-content/uploads/2022/07/cropped-Modiff-B.png'):
                 response = st.write_stream(stream_data)
             
-            st.divider()
+            #st.divider()
 
             # Ajout de la reponse du BOT INSI dans l'historique
             st.session_state.messages.append({"role": "assistant", "content": response})
