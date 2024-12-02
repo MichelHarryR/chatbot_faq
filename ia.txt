@@ -35,3 +35,17 @@ Pourquoi sommes-nous différents ?
 - Formations d’excellence
 - Equipe compétent
 - Expérimenté
+
+Conditions d’admission pour la formation en Master
+Le MASTER  est ouvert aux candidats titulaires d’un diplôme (Bac+4 ou plus) en Informatique ou équivalent. L’admission est prononcée à l’issue de l’examen du  dossier du candidat  par une commission mixte .
+Contenu de la formation
+Formation universitaire d’une année (incluant stage en entreprise) pour chaque niveau de Master.
+- Module « Intelligence artificielle et data science  » : Mathématiques pour la data science, Statistiques pour la data science, Data Collection, Visualisation, Exploration, Analyse et traitement des données, Machine Learning, Deep Learning, Data Engineering et Langage Scala, DevOps, Langage R, Langage Python
+- Module « Développement web et mobile   » : Développement web front end : MERN, MEVN, MEAN , Développement web back end : symfony, laravel, Développement mobile ios et android : React Native, ionic, flutter, kootlin.., Développement et implémentation intelligence artificielle: Machine learning , Deep learning  , data science
+- Module « Infrastructures  et Bases de données avancées  » : Les concepts de base et infrastructures en informatique d’entreprise Bases de données avancées . Administration avancée, optimisation (« tuning ») d’un serveur de données relationnelles/ objets » . Datawarehouse, Datamining et CRM » . Pentesting , Ethical Hacking. Sécurité réseaux , systèmes
+- Module « Serveurs d’applications et environnements de développement » : Serveurs d’applications (y compris mobile) et environnement de développement J2EE », Java avancé (EJB, JSP, J2EE, Java embarqué, java Multimedia,..), Apache jdevelopper, framework STRUTS, plateforme J2EE et serveur d’applications sans fils, Architecture N-tier et middleware objet : XML et services WEB (SOAP,UDDI ,WSDL), Serveurs d’applications (y compris mobile) et environnement de développement .NET
+- Module «Systèmes d’Information » : Développement d’applications mobiles, Environnement de développement sur ANDROID, Environnement de développement sur IPhone/IOS
+- Module Conception avancée, gestion de projets et entreprenariat : Conception avancée autour d’UML et Design pattern, Concepts progiciels et intégration d’applications : ERP et EAI , Gestion de projets et Conception AGILE
+
+Concernant les Enseignants: 
+La formation est assurée par des enseignants de l’Université INSI. .
