@@ -1,0 +1,37 @@
+I - Institut spécialisée en Informatique
+INSI est un institut privé spécialisé en informatique ,en intelligence artificielle , data science, cybersécurité  à Madagascar. C’est un institut supérieur en informatique de haut niveau qui vous propose des formations universitaires et professionnelles à Madagascar.
+
+II - INSI , Offre de formations :
+INSI , propose de formation modulaire, professionnel pour vous aidez à votre insertion professionnel dans le domaine du développement web, administration réseaux et systèmes, intelligence artificielle , data science, data analytics, data visualisation, data engineer, machine learning, deep learning, python et langage R .
+- Développement : Le développeur web s’occupe du développement informatique de sites, applications, plateformes web. Il développe de nouvelles fonctionnalités et/ou maintient les fonctionnalités existantes.
+- Maintenance de réseaux et systeme : L’Ingénieur en systèmes et réseaux est chargé d’assurer la maintenance du système informatique afin qu’il fonctionne correctement, ainsi que son amélioration. Sa fonction principale est de gérer les différents moyens informatiques, de veiller à surveiller les réseaux, ainsi que la sécurité des informations.
+- Intelligence artificielle : L’intelligence artificielle (IA) est entrée dans le courant dominant et a révolutionné notre façon de travailler. L’IA est de plus en plus adoptée pour automatiser de nombreux emplois avec une productivité beaucoup plus élevée, un coût plus faible et des solutions évolutives.
+- Machine Learning : Le métier de Machine Learning est centré sur la conception, le développement et le déploiement de systèmes d’apprentissage automatique pour résoudre des problèmes complexes. Il est notamment chargé du développement de modèles d’apprentissage automatique, de l’évaluation et de l’optimisation des modèles.
+- Data Science : Le data scientist occupe une place centrale au sein de l’entreprise dont il peut influer la politique grâce à ses analyses et recommandations. Selon le cas, il travaille sur la gestion des risques, la fidélisation des clients ou encore les campagnes marketing.
+- Data Analytics : A l’heure du big data et de l’augmentation croissante de données stratégiques à exploiter par les entreprises, les perspectives d’évolution du poste sont nombreuses, notamment dans les secteurs des services financiers, des nouvelles technologies, du conseil, de la santé ou de l’industrie.
+- Data visualization : Il s’agit d’un profil convoité par les entreprises spécialisées dans la data, les services publics, les marketers ou les entreprises de service numérique.  Le Data Visualist a pour rôle d’assurer la création de supports de communication qui représentent des informations, notamment sous forme de graphiques.
+- Data Engineer : Le/la data engineer est un développeur informatique qui a pour mission de mettre en place la collecte et la mise à disposition des données au sein de l’entreprise. Il/elle est également en charge d’industrialiser et mettre en production des traitements sur les données (par exemple : mise à disposition de tableaux de bord, intégration de modèles statistiques) en lien avec les équipes métiers et les équipes qui les analysent.
+- Deep Learning : Le rôle d’un ingénieur deep learning est d’être spécialiste en matière de développement et mise en place d’algorithmes d’apprentissage reposant sur les architectures de réseaux de neurones profonds et complexes. C’est une tâche plus technique que celle d’un ingénieur machine learning "classique", car les outils utilisés sont plus poussés d’un point de vue théorique.
+- Python : Programmeur Python est amené à collaborer avec d’autres Développeurs spécialisés en Python, comme lui, ou bien sur d’autres langages. Au-delà, il collabore également avec de multiples professionnels : Scrum Master, CTO, Ingénieur DevOps, Architecte, etc.
+- Langage R : L’ingénieur en R est un expert en langage de programmation statistique R. Il sait programmer avec cet outil pour traiter des données et identifier les types d’objets de ce langage. Il utilise le langage de programmation R pour traiter de grandes quantités de données et les traduire en informations structurées.
+- COBIT 19 : COBIT 19 est un cadre de gouvernance des technologies de l’information (TI) qui aide les entreprises à aligner leurs stratégies IT sur leurs objectifs organisationnels. Cette formation vous fournit une compréhension approfondie de COBIT 19, en vous permettant de maîtriser les meilleures pratiques en matière de gestion des risques, de conformité, et d’optimisation des ressources IT. 
+- ITIL 4 : ITIL 4 (Information Technology Infrastructure Library) est le cadre de référence mondial pour la gestion des services IT, offrant une approche complète pour aligner les services IT sur les besoins de l’entreprise. Cette formation vous guidera à travers les concepts essentiels d’ITIL 4, vous permettant de maîtriser la gestion des services IT en adoptant les meilleures pratiques pour améliorer la performance, la qualité, et l’efficacité des services IT dans votre organisation.
+- Agile scrum : Dans un monde où les environnements de travail sont en constante évolution, l’approche Agile est devenue essentielle pour les entreprises souhaitant maintenir une flexibilité, une rapidité et une efficacité optimales dans la gestion de leurs projets. Le cadre Scrum, en particulier, est l’une des méthodologies Agile les plus populaires et les plus efficaces pour gérer des projets complexes et améliorer la collaboration au sein des équipes.
+
+III - Type de formation diplômante à l'INSI
+On a trois type de formation diplômante : le DTS , la licence et le master.
+Voici les details de ces type de formation : 
+- Formation diplômante en vue d'obtention de DTS : L’université INSI est une école informatique basée à Madagascar qui vous propose de formation présentielle , formation de haut niveau, pratique .
+- Formation diplômante en vue d'obtention de Licence : L’université INSI propose les formation suivant en vue d’obtention du diplôme licence 3 avec une qualification professionnelle et académique  délivré après trois années d’études de Licence.
+> Génie Logiciel
+> Intelligence artificielle et data science
+> Base de données et  Réseaux systèmes
+- Formation diplômante en vue d'obtention de Master : Une formation en vue de d’obtention de  diplôme de Master 2 avec une qualification professionnelle et académique  délivré après deux années d’études de Master.
+> Master en Management en Systeme d'Information ( MSI )
+> Ingenierie en intelligence artificielle ( I2A )
+> Architecture et Cybersecurité Réseaux ( ACR )
+
+Pourquoi sommes-nous différents ?
+- Formations d’excellence
+- Equipe compétent
+- Expérimenté

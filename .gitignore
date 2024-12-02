@@ -1,0 +1,3 @@
+#on n'envoie pas le dossier customchat
+customchat/
+.env
