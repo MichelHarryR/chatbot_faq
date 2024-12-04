@@ -7,3 +7,5 @@ customchat/
 .env
 
 chroma_db/
+
+__pycache__/
