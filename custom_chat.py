@@ -9,7 +9,7 @@ import streamlit as st
 import time
 
 #chargement du core LMM / CHATBOT
-from query import query
+from query import ChatBot
 
 
 def stream_data():
@@ -64,7 +64,7 @@ if __name__ == "__main__":
         
         
         #recuperation de la reponse
-        answer = query(q)
+        answer = ChatBot(q)
 
         REPONSE = answer
         

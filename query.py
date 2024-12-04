@@ -231,7 +231,7 @@ prompt = ChatPromptTemplate.from_template(template)
 
 
 # Query
-def query(query):
+def ChatBot(query):
     
     mots_a_verifier = ["bye","au revoir"]
     
