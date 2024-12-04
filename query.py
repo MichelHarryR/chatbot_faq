@@ -247,7 +247,7 @@ def query(query):
         final_answer = "Au revoir et à bientôt"
         return final_answer
     else:
-        '''  
+          
         #creation de sous question par rapport au question principale de l'utilisateur pour augmenter l'accuracy de la reponse / recherche
         sub_questions = generate_sub_questions(query)     
         #repondre 1 à 1 à tous les sub question avec un prompt rag
@@ -262,7 +262,7 @@ def query(query):
         )
         
         final_answer = final_rag_chain.invoke({"question":query, "context":context})
-        '''
+        
         return final_answer 
     
     
