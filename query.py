@@ -67,7 +67,7 @@ for url in urls:
     loader = WebBaseLoader(url)  # Créer un loader pour chaque URL
     docs.extend(loader.load())     # Charger et ajouter les documents à la liste
     i += 1
-    if (i > 1):
+    if (i > 2):
         break
 
 # loading PDF, DOCX and TXT files as LangChain Documents

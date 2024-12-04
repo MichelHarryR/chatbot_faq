@@ -42,8 +42,12 @@ if __name__ == "__main__":
     
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+        if message['role'] == "assistant":
+            with st.chat_message(message["role"], avatar='./public/logo_insi.png'):
+                st.markdown(message["content"])
+        else:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
     
     
     # composant pour la question de l'utilisateur
