@@ -60,7 +60,7 @@ if __name__ == "__main__":
         with st.chat_message("user"):
             st.markdown(q)
         
-        
+        st.write(st.session_state)
         if 'vs' in st.session_state: # if there's the vector store (user uploaded, split and embedded a file)
             #vector_store = st.session_state.vs
             
