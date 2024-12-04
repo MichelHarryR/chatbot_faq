@@ -5,7 +5,7 @@ import sys
 sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 import streamlit as st
-import sqlite3 #UNIQUEMENT EN PROD SUR STREAMLIT
+import sqlite3 #UNIQUEMENT EN PROD SUR STREAMLIT //
 import time
 
 #chargement du core LMM / CHATBOT
