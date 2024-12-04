@@ -113,7 +113,7 @@ st.session_state.vs = vectorstore
 k = 10 #nombre de k-voisin
 retriever = vectorstore.as_retriever(search_type='mmr', search_kwargs={'k': k}) #on utilise le type de recherche mmr au lieu de similarity
 
-st.write("Retriever OKk")
+#st.write("Retriever OKk")
 
 # 1. DECOMPOSITION - CI DESSOUS LE CONTENU DU PROMPT QUI VA EFFECTUER LA DECOMPOSITION DE LA QUESTION PRIMITIF; ICI ON VA GENERER 3 QUESTION BIEN REFORMULER
 template = """You are a helpful assistant trained to generates multiple sub-questions related to an input question. \n
@@ -187,13 +187,13 @@ def generate_qa_pairs(sub_questions):
 
 # 3. REPONDRE 1 PAR 1 LES SOUS QUESTIONS GENERER AFIN DE GENERER LE CONTEXTE FINAL
 
-st.write("Prompt RAG debut")
+#st.write("Prompt RAG debut")
 
 # RAG prompt = https://smith.langchain.com/hub/rlm/rag-prompt
 prompt_rag = hub.pull("rlm/rag-prompt") #ceci utilise un HUB de prompt specialisé pour le RAG
 
-st.write(prompt_rag)
-st.write("Prompt RAG OK")
+#st.write(prompt_rag)
+#st.write("Prompt RAG OK")
 
 def retrieve_and_rag(prompt_rag, sub_questions):
     """RAG on each sub-question"""
@@ -235,8 +235,7 @@ prompt = ChatPromptTemplate.from_template(template)
 def query(query):
     
     mots_a_verifier = ["bye","au revoir"]
-    final_answer = 'test'
-    st.write(final_answer)
+    
     if 'bonjour' in query.lower():
         final_answer = "Bonjour, qu'est ce que je peux faire pour vous ?"
         return final_answer
