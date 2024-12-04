@@ -61,7 +61,7 @@ if __name__ == "__main__":
             st.markdown(q)
         
        
-        #vector_store = st.session_state.vs
+        
         
         #recuperation de la reponse
         answer = query(q)

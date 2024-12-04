@@ -187,13 +187,12 @@ def generate_qa_pairs(sub_questions):
 
 # 3. REPONDRE 1 PAR 1 LES SOUS QUESTIONS GENERER AFIN DE GENERER LE CONTEXTE FINAL
 
-#st.write("Prompt RAG debut")
+
 
 # RAG prompt = https://smith.langchain.com/hub/rlm/rag-prompt
 prompt_rag = hub.pull("rlm/rag-prompt") #ceci utilise un HUB de prompt specialisé pour le RAG
 
-#st.write(prompt_rag)
-#st.write("Prompt RAG OK")
+
 
 def retrieve_and_rag(prompt_rag, sub_questions):
     """RAG on each sub-question"""
