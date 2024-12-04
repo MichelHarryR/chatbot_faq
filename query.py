@@ -94,7 +94,7 @@ def load_document(file):
     return data
 
 file_name = os.path.join('./', 'ia.txt')
-docs = load_document(file_name)
+docs = load_document(file_name) #utilisation du fichier ia.txt
 
 # Split du document en 512 morceau avec 50 caractere de chevauchement
 text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
