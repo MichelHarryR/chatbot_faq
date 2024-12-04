@@ -113,7 +113,7 @@ st.session_state.vs = vectorstore
 k = 10 #nombre de k-voisin
 retriever = vectorstore.as_retriever(search_type='mmr', search_kwargs={'k': k}) #on utilise le type de recherche mmr au lieu de similarity
 
-st.write("Retriever OKk")
+
 
 # 1. DECOMPOSITION - CI DESSOUS LE CONTENU DU PROMPT QUI VA EFFECTUER LA DECOMPOSITION DE LA QUESTION PRIMITIF; ICI ON VA GENERER 3 QUESTION BIEN REFORMULER
 template = """You are a helpful assistant trained to generates multiple sub-questions related to an input question. \n
