@@ -10,3 +10,10 @@ docx2txt
 pypdf
 chromadb
 pysqlite3-binary
+
+langchain-core
+langchain-text-splitters
+bs4==0.0.2
+colorama==0.4.6
+tqdm==4.66.4
+langchainhub==0.1.20
