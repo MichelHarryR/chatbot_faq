@@ -19,10 +19,10 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-load_dotenv()
+#load_dotenv()
 
-# LLM
-llm = ChatOpenAI(model='gpt-4o')
+# LLM : instanciation du modele
+llm = ChatOpenAI(model='gpt-4o', temperature=1.2, openai_api_key=st.secrets["OPENAI_API_KEY"])
 
 # Initialisation de la liste pour stocker tous les documents
 docs = []
@@ -57,7 +57,7 @@ urls = [
     "https://www.insi.mg/dossier-a-fournir/"
 ]
 
-# Charger chaque URL et ajouter les documents à la liste
+# Charger chaque URL et ajouter les documents à la liste pour l'INSI
 i = 0
 for url in urls:
     loader = WebBaseLoader(url)  # Créer un loader pour chaque URL
@@ -69,29 +69,21 @@ for url in urls:
 # À ce stade, docs contient tous les documents chargés des URLs
 #print(f"Total documents loaded: {len(docs)}")
 
-#  split documents, create vector store and load embeddings
-'''loader = WebBaseLoader(
-    web_paths=("https://blog.langchain.dev/reflection-agents/",),
-    bs_kwargs=dict(
-        parse_only=bs4.SoupStrainer(
-            class_=("article-header section", "article-header__content", "article-header__footer")
-        )
-    ),
-)
-blog_docs = loader.load()'''
 
 # Split
 text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
-    chunk_size=300, 
+    chunk_size=512, 
     chunk_overlap=50)
 splits = text_splitter.split_documents(docs)
 
 # Index and load embeddings
 vectorstore = Chroma.from_documents(documents=splits, 
-                                    embedding=OpenAIEmbeddings())
+                                    embedding=OpenAIEmbeddings(model='text-embedding-3-large', dimensions=3072, openai_api_key=st.secrets["OPENAI_API_KEY"]),
+                                    persist_directory=persist_directory)
 
 # Create the vector store
-retriever = vectorstore.as_retriever()
+k = 10 #nombre de k-voisin
+retriever = vectorstore.as_retriever(search_type='mmr', search_kwargs={'k': k})
 
 
 # 1. DECOMPOSITION - CI DESSOUS LE CONTENU DU PROMPT QUI VA EFFECTUER LA DECOMPOSITION DE LA QUESTION PRIMITIF; ICI ON VA GENERER 3 QUESTION BIEN REFORMULER
@@ -100,12 +92,6 @@ The goal is to break down the input into a set of sub-problems / sub-questions t
 The context always speaks of INSI which is an institute specialized in the IT field. \n
 Generate multiple search queries related to: {question} \n
 Output (3 queries):"""
-
-'''template = """Tu es un assistant entrainé pour generer plusieurs sous question relatif à la question principale.\n
-Ton but c'est de diviser la question principale en des sous-questions qui peut etre repondu 1 à 1.\n
-Le sujet ne concerne que l'INSI qui est une Institut Specialisé dans le domaine de l'informatique. \n
-Genere des requetes multiples rapport a : {question} \n
-Output (3 requetes):"""'''
 
 prompt_decomposition = ChatPromptTemplate.from_template(template)
 
@@ -121,10 +107,7 @@ def generate_sub_questions(query):
     )
     # Run
     sub_questions = generate_queries_decomposition.invoke({"question":query})
-    #print(sub_questions)
     questions_str = "\n".join(sub_questions)
-    #print(Fore.MAGENTA + "===== SUBQUESTIONS: =====" + Fore.RESET)
-    #print(Fore.WHITE + questions_str + Fore.RESET + "\n")
     return sub_questions
     
      
@@ -216,17 +199,8 @@ prompt = ChatPromptTemplate.from_template(template)
 
 # Query
 def query(query):
-    # generate optimized answer for a given query using the improved subqueries
-    question = "What are the main components of an LLM-powered autonomous agent system?"
-    queries = [
-        "How is context improving AI systems",
-        "What are the two main components involved in Basic Reflection",
-        "Explain the steps involved in the Reflexion loop"
-    ]
     #creation de sous question par rapport au question principale de l'utilisateur
-    sub_questions = generate_sub_questions(query)
-    #generate_qa_pairs(sub_questions=sub_questions)
-    
+    sub_questions = generate_sub_questions(query)     
     #repondre 1 à 1 à tous les sub question avec un prompt rag
     answers, questions = retrieve_and_rag(prompt_rag=prompt_rag,sub_questions=sub_questions)
     
