@@ -63,13 +63,13 @@ urls = [
 
 # Charger chaque URL et ajouter les documents à la liste pour l'INSI
 i = 0
-'''for url in urls:
+for url in urls:
     loader = WebBaseLoader(url)  # Créer un loader pour chaque URL
     docs.extend(loader.load())     # Charger et ajouter les documents à la liste
     i += 1
     if (i > 2):
         break
-'''
+
 # loading PDF, DOCX and TXT files as LangChain Documents
 def load_document(file):
     import os
@@ -93,8 +93,8 @@ def load_document(file):
     data = loader.load()
     return data
 
-file_name = os.path.join('./', 'ia.txt')
-docs = load_document(file_name) #utilisation du fichier ia.txt
+#file_name = os.path.join('./', 'ia.txt')
+#docs = load_document(file_name) #utilisation du fichier ia.txt
 
 # Split du document en 512 morceau avec 50 caractere de chevauchement
 text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
