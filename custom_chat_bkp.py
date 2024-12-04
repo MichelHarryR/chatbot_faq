@@ -1,8 +1,22 @@
 # Install all libraries by running in the terminal: pip install -q -r ./requirements.txt
+# CODE UNIQUEMENT EN PROD SUR STREAMLIT
+#__import__('pysqlite3')
+#import sys
+#sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 import streamlit as st
+#import sqlite3 #UNIQUEMENT EN PROD SUR STREAMLIT
 import time
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
+
+import os
+# Définir le chemin du répertoire chroma_db relatif au script
+persist_directory = os.path.join(os.path.dirname(__file__), "chroma_db")
+# Créer le répertoire s'il n'existe pas
+os.makedirs(persist_directory, exist_ok=True)
+
+
 
 # loading PDF, DOCX and TXT files as LangChain Documents
 def load_document(file):
@@ -38,21 +52,22 @@ def chunk_data(data, chunk_size=256, chunk_overlap=20):
 
 # create embeddings using OpenAIEmbeddings() and save them in a Chroma vector store
 def create_embeddings(chunks):
-    embeddings = OpenAIEmbeddings(model='text-embedding-3-small', dimensions=1536)  # 512 works as well
-    vector_store = Chroma.from_documents(chunks, embeddings)
+    embeddings = OpenAIEmbeddings(model='text-embedding-3-large', dimensions=3072, openai_api_key=st.secrets["OPENAI_API_KEY"])  # 512 works as well
+    vector_store = Chroma.from_documents(chunks, embeddings, persist_directory=persist_directory)
     return vector_store
 
 
 def ask_and_get_answer(vector_store, q, k=3):
     from langchain.chains import RetrievalQA
     from langchain_openai import ChatOpenAI
-
-    llm = ChatOpenAI(model='gpt-4o', temperature=1)
+    
+    llm = ChatOpenAI(model='gpt-4o', temperature=1.2, openai_api_key=st.secrets["OPENAI_API_KEY"])
     
     retriever = vector_store.as_retriever(search_type='mmr', search_kwargs={'k': k}) #similarity
-    chain = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever)
+    chain = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=retriever, return_source_documents=True)
 
     answer = chain.invoke(q)
+    #st.write(answer['source_documents'] )
     return answer['result'] 
 
 
@@ -83,68 +98,47 @@ if __name__ == "__main__":
     import os
 
     # loading the OpenAI api key from .env
-    from dotenv import load_dotenv, find_dotenv
-    load_dotenv(find_dotenv(), override=True)
+    #from dotenv import load_dotenv, find_dotenv
+    #load_dotenv(find_dotenv(), override=True)
 
-    api_key = os.getenv("OPENAI_API_KEY")
+    #api_key = os.getenv("OPENAI_API_KEY")
     
     # Initialize chat history
     if "messages" not in st.session_state:
         st.session_state.messages = []
     
+    
+    gauche , milieu, droite = st.columns([0.1,0.03,0.1])
+    
+    with milieu:
+        st.image("https://www.insi.mg/wp-content/uploads/2022/07/cropped-Modiff-B.png", use_container_width=True)
+    
+    gauche1 , milieu1, droite1 = st.columns([1,6,1])
+    with milieu1: 
+        st.subheader("Discutez avec l'IA : Votre Assistant à l'INSI")
+    
     #st.image('img.png')
-    st.subheader('Bienvenu sur le CHATBOT DE INSI')
-    with st.sidebar:
-        # text_input for the OpenAI API key (alternative to python-dotenv and .env)
-        #api_key = st.text_input('OpenAI API Key:', type='password')
-        #if api_key:
-        #    os.environ['OPENAI_API_KEY'] = api_key
-
-        # upload de fichier BDD statique pour le FAQ
-        #uploaded_file = st.file_uploader('Ajouter le fichier pour le FAQ :', type=['pdf', 'docx', 'txt'])
-
-        # Definition du chunck size
-        chunk_size = 512
-        #chunk_size = st.number_input('Chunk size:', min_value=100, max_value=2048, value=512, on_change=clear_history)
-
-        # Definition du nombre de K-voisin pour la recherche de similarité
-        k = 5
-        #k = st.number_input('k', min_value=1, max_value=20, value=3, on_change=clear_history)
-
-        # add data button widget
-        #add_data = st.button('Add Data', on_click=clear_history)
-
-        #if uploaded_file and add_data: # if the user browsed a file
-            #with st.spinner('Reading, chunking and embedding file ...'):
-
-                # writing the file from RAM to the current directory on disk
-        #bytes_data = uploaded_file.read()
+    
+    chunk_size = 512
+    k = 10
     file_name = os.path.join('./', 'ia.txt')
-    #with open(file_name, 'wb') as f:
-        #f.write(bytes_data)
-
     data = load_document(file_name)
     chunks = chunk_data(data, chunk_size=chunk_size)
-    #st.write(f'Chunk size: {chunk_size}, Chunks: {len(chunks)}')
     
     tokens, embedding_cost = calculate_embedding_cost(chunks)
-    #st.write(f'Embedding cost: ${embedding_cost:.4f}')
-
+    
     # creating the embeddings and returning the Chroma vector store
     vector_store = create_embeddings(chunks)
 
     # saving the vector store in the streamlit session state (to be persistent between reruns)
     st.session_state.vs = vector_store
-    #st.success('File uploaded, chunked and embedded successfully.')
-
     
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
     
-    # user's question text input widget
-    #q = st.text_input('Ask a question about the content of your file:')
+    # composant pour la question de l'utilisateur
     if q := st.chat_input("Posez votre question à propos de l'INSI ?"):
         
          # Ajout du message utilisateur dans l'historique
@@ -156,6 +150,7 @@ if __name__ == "__main__":
         
         standard_answer = "Answer only based on the text you received as input. Don't search external sources. " \
                         "If you can't answer then return `Vous pouvez vous adresser à l'INSI Ambanidia pour avoir plus de precision`." \
+                        "If you can't answer then Give the reason in French and return a pertinent question" \
                         "If the text you received as input contains `Bonjour` then return Bonjour, qu'est ce que je peux faire pour vous ?"
                             
         
@@ -164,18 +159,22 @@ if __name__ == "__main__":
         if 'vs' in st.session_state: # if there's the vector store (user uploaded, split and embedded a file)
             vector_store = st.session_state.vs
             
+            #st.write(chunks)
+            
             answer = ask_and_get_answer(vector_store, q, k)
 
             REPONSE = answer
             
             # Recuperation du Bot INSI
-            with st.chat_message("assistant"):
+            with st.chat_message("assistant", avatar='https://www.insi.mg/wp-content/uploads/2022/07/cropped-Modiff-B.png'):
                 response = st.write_stream(stream_data)
             
-            st.divider()
+            #st.divider()
 
             # Ajout de la reponse du BOT INSI dans l'historique
             st.session_state.messages.append({"role": "assistant", "content": response})
+            
+            #st.write(st.session_state)
             
 # run the app: streamlit run ./chat_with_documents.py
 
