@@ -108,7 +108,7 @@ vectorstore = Chroma.from_documents(documents=splits,
                                     persist_directory=persist_directory)
 
 st.session_state.vs = vectorstore
-st.write(st.session_state["vs"])
+st.write(st.session_state)
 # Create the vector store
 k = 10 #nombre de k-voisin
 retriever = vectorstore.as_retriever(search_type='mmr', search_kwargs={'k': k}) #on utilise le type de recherche mmr au lieu de similarity
