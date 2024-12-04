@@ -60,7 +60,6 @@ if __name__ == "__main__":
         with st.chat_message("user"):
             st.markdown(q)
         
-        st.write(st.session_state)
        
         #vector_store = st.session_state.vs
         
