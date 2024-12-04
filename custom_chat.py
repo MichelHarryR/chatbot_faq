@@ -32,7 +32,7 @@ if __name__ == "__main__":
     
     gauche1 , milieu1, droite1 = st.columns([1,6,1])
     with milieu1: 
-        st.subheader("Discutez avec l'IA : Votre Assistant à l'INSI")
+        st.subheader("Discutez avec l'IA : Votre Assistant à l'INSI.")
         
     # creating the embeddings and returning the Chroma vector store
     #vector_store = vectorstore #from query
