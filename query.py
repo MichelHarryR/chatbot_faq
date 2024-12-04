@@ -1,4 +1,4 @@
-
+import streamlit as st
 import bs4
 from dotenv import load_dotenv
 from langchain import hub
@@ -19,6 +19,12 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
+import os
+# Définir le chemin du répertoire chroma_db relatif au script
+persist_directory = os.path.join(os.path.dirname(__file__), "chroma_db")
+# Créer le répertoire s'il n'existe pas
+os.makedirs(persist_directory, exist_ok=True)
+
 #load_dotenv()
 
 # LLM : instanciation du modele
@@ -32,8 +38,6 @@ urls = [
     "https://www.insi.mg/",
     "https://www.insi.mg/reseaux-et-systeme/",
     "https://www.insi.mg/developpement/",
-    "https://www.insi.mg/projet-okile/",
-    "https://www.insi.mg/agile-scrum/",
     "https://www.insi.mg/formation-longue/",
     "https://www.insi.mg/formation-certifiante/",
     "https://www.insi.mg/ia-et-data-science/",
@@ -66,11 +70,33 @@ for url in urls:
     if (i > 1):
         break
 
-# À ce stade, docs contient tous les documents chargés des URLs
-#print(f"Total documents loaded: {len(docs)}")
+# loading PDF, DOCX and TXT files as LangChain Documents
+def load_document(file):
+    import os
+    name, extension = os.path.splitext(file)
 
+    if extension == '.pdf':
+        from langchain_community.document_loaders import PyPDFLoader
+        print(f'Loading {file}')
+        loader = PyPDFLoader(file)
+    elif extension == '.docx':
+        from langchain_community.document_loaders import Docx2txtLoader
+        print(f'Loading {file}')
+        loader = Docx2txtLoader(file)
+    elif extension == '.txt':
+        from langchain_community.document_loaders import TextLoader
+        loader = TextLoader(file)
+    else:
+        print('Document format is not supported!')
+        return None
 
-# Split
+    data = loader.load()
+    return data
+
+#file_name = os.path.join('./', 'ia.txt')
+#docs = load_document(file_name)
+
+# Split du document en 512 morceau avec 50 caractere de chevauchement
 text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
     chunk_size=512, 
     chunk_overlap=50)
@@ -81,9 +107,11 @@ vectorstore = Chroma.from_documents(documents=splits,
                                     embedding=OpenAIEmbeddings(model='text-embedding-3-large', dimensions=3072, openai_api_key=st.secrets["OPENAI_API_KEY"]),
                                     persist_directory=persist_directory)
 
+st.session_state.vs = vectorstore
+
 # Create the vector store
 k = 10 #nombre de k-voisin
-retriever = vectorstore.as_retriever(search_type='mmr', search_kwargs={'k': k})
+retriever = vectorstore.as_retriever(search_type='mmr', search_kwargs={'k': k}) #on utilise le type de recherche mmr au lieu de similarity
 
 
 # 1. DECOMPOSITION - CI DESSOUS LE CONTENU DU PROMPT QUI VA EFFECTUER LA DECOMPOSITION DE LA QUESTION PRIMITIF; ICI ON VA GENERER 3 QUESTION BIEN REFORMULER
@@ -156,7 +184,7 @@ def generate_qa_pairs(sub_questions):
         q_a_pairs = q_a_pairs + "\n --- \n" + q_a_pair
     
 
-# 3. ANSWER INDIVIDUALLY
+# 3. REPONDRE 1 PAR 1 LES SOUS QUESTIONS GENERER AFIN DE GENERER LE CONTEXTE FINAL
 
 # RAG prompt = https://smith.langchain.com/hub/rlm/rag-prompt
 prompt_rag = hub.pull("rlm/rag-prompt") #ceci utilise un HUB de prompt specialisé pour le RAG
@@ -178,7 +206,6 @@ def retrieve_and_rag(prompt_rag, sub_questions):
     return rag_results, sub_questions
     
 
-
 # SUMMARIZE AND ANSWER 
 
 # Prompt
@@ -188,7 +215,9 @@ template = """Here is a set of Q+A pairs:
 
 to use these to synthesize an answer to the question: {question} \n
 Short and concise sentences not exceeding 50 words. \n
-If the question is a greeting, confirmation or politeness then you should answer accordingly. \n
+If the question contains 'Bonjour' or 'Hello' or other greeting then return 'Bonjour, qu\'est ce que je peux faire pour vous ?'. \n
+If the question contains a polite phrase such as 'goodbye', 'thank you' , 'Au revoir', 'Bye' or other then return 'Au revoir et à bientôt'. \n
+If the question contains 'Merci' or other then return 'Je vous en prie'. \n
 If you do not know the answer to a question then you direct the person to contact INSI directly. \n
 If the question has nothing to do with INSI then you guide the person by asking them questions only about INSI. \n
 All answers are always based on the language used in the question.
@@ -199,21 +228,33 @@ prompt = ChatPromptTemplate.from_template(template)
 
 # Query
 def query(query):
-    #creation de sous question par rapport au question principale de l'utilisateur
-    sub_questions = generate_sub_questions(query)     
-    #repondre 1 à 1 à tous les sub question avec un prompt rag
-    answers, questions = retrieve_and_rag(prompt_rag=prompt_rag,sub_questions=sub_questions)
     
-    #creation du context finale
-    context = format_qa_pairs(questions,answers)
+    mots_a_verifier = ["bye","au revoir"]
     
-    final_rag_chain = (
-        prompt
-        | llm
-        | StrOutputParser()
-    )
-    
-    final_answer = final_rag_chain.invoke({"question":query, "context":context})
-    return final_answer 
+    if 'bonjour' in query.lower():
+        final_answer = "Bonjour, qu'est ce que je peux faire pour vous ?"
+        return final_answer
+    elif 'merci' in query.lower():
+        final_answer = "Je vous en prie"
+        return final_answer
+    elif any(mot.lower() in query.lower() for mot in mots_a_verifier):
+        final_answer = "Au revoir et à bientôt"
+        return final_answer
+    else:  
+        #creation de sous question par rapport au question principale de l'utilisateur pour augmenter l'accuracy de la reponse / recherche
+        sub_questions = generate_sub_questions(query)     
+        #repondre 1 à 1 à tous les sub question avec un prompt rag
+        answers, questions = retrieve_and_rag(prompt_rag=prompt_rag,sub_questions=sub_questions)
+        #creation du context finale
+        context = format_qa_pairs(questions,answers)
+        
+        final_rag_chain = (
+            prompt
+            | llm
+            | StrOutputParser()
+        )
+        
+        final_answer = final_rag_chain.invoke({"question":query, "context":context})
+        return final_answer 
     
     

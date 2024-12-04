@@ -7,13 +7,6 @@
 import streamlit as st
 #import sqlite3 #UNIQUEMENT EN PROD SUR STREAMLIT
 import time
-#from langchain_openai import OpenAIEmbeddings
-#from langchain_community.vectorstores import Chroma
-import os
-# Définir le chemin du répertoire chroma_db relatif au script
-persist_directory = os.path.join(os.path.dirname(__file__), "chroma_db")
-# Créer le répertoire s'il n'existe pas
-os.makedirs(persist_directory, exist_ok=True)
 
 #chargement du core LMM / CHATBOT
 from query import query
@@ -32,28 +25,26 @@ if __name__ == "__main__":
     if "messages" not in st.session_state:
         st.session_state.messages = []
     
-    
     gauche , milieu, droite = st.columns([0.1,0.03,0.1])
     
     with milieu:
-        st.image("https://www.insi.mg/wp-content/uploads/2022/07/cropped-Modiff-B.png", use_container_width=True)
+        st.image("./public/logo_insi.png", use_container_width=True)
     
     gauche1 , milieu1, droite1 = st.columns([1,6,1])
     with milieu1: 
         st.subheader("Discutez avec l'IA : Votre Assistant à l'INSI")
-    
-    #st.image('img.png')
-    
+        
     # creating the embeddings and returning the Chroma vector store
-    vector_store = vectorstore #from query
+    #vector_store = vectorstore #from query
 
     # saving the vector store in the streamlit session state (to be persistent between reruns)
-    st.session_state.vs = vector_store
+    #st.session_state.vs = vector_store
     
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
+    
     
     # composant pour la question de l'utilisateur
     if q := st.chat_input("Posez votre question à propos de l'INSI ?"):
@@ -67,7 +58,7 @@ if __name__ == "__main__":
         
         
         if 'vs' in st.session_state: # if there's the vector store (user uploaded, split and embedded a file)
-            vector_store = st.session_state.vs
+            #vector_store = st.session_state.vs
             
             #recuperation de la reponse
             answer = query(q)
@@ -75,15 +66,9 @@ if __name__ == "__main__":
             REPONSE = answer
             
             # Recuperation du Bot INSI
-            with st.chat_message("assistant", avatar='https://www.insi.mg/wp-content/uploads/2022/07/cropped-Modiff-B.png'):
+            with st.chat_message("assistant", avatar='./public/logo_insi.png'):
                 response = st.write_stream(stream_data)
             
-            #st.divider()
-
             # Ajout de la reponse du BOT INSI dans l'historique
             st.session_state.messages.append({"role": "assistant", "content": response})
             
-            #st.write(st.session_state)
-            
-# run the app: streamlit run ./chat_with_documents.py
-
