@@ -61,18 +61,18 @@ if __name__ == "__main__":
             st.markdown(q)
         
         st.write(st.session_state)
-        if 'vs' in st.session_state: # if there's the vector store (user uploaded, split and embedded a file)
-            #vector_store = st.session_state.vs
-            
-            #recuperation de la reponse
-            answer = query(q)
+       
+        #vector_store = st.session_state.vs
+        
+        #recuperation de la reponse
+        answer = query(q)
 
-            REPONSE = answer
-            
-            # Recuperation du Bot INSI
-            with st.chat_message("assistant", avatar='./public/logo_insi.png'):
-                response = st.write_stream(stream_data)
-            
-            # Ajout de la reponse du BOT INSI dans l'historique
-            st.session_state.messages.append({"role": "assistant", "content": response})
+        REPONSE = answer
+        
+        # Recuperation du Bot INSI
+        with st.chat_message("assistant", avatar='./public/logo_insi.png'):
+            response = st.write_stream(stream_data)
+        
+        # Ajout de la reponse du BOT INSI dans l'historique
+        st.session_state.messages.append({"role": "assistant", "content": response})
             
