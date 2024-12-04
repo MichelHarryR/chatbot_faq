@@ -230,7 +230,8 @@ prompt = ChatPromptTemplate.from_template(template)
 def query(query):
     
     mots_a_verifier = ["bye","au revoir"]
-    
+    final_answer = 'test'
+    st.write(final_answer)
     if 'bonjour' in query.lower():
         final_answer = "Bonjour, qu'est ce que je peux faire pour vous ?"
         return final_answer
@@ -240,7 +241,8 @@ def query(query):
     elif any(mot.lower() in query.lower() for mot in mots_a_verifier):
         final_answer = "Au revoir et à bientôt"
         return final_answer
-    else:  
+    else:
+        '''  
         #creation de sous question par rapport au question principale de l'utilisateur pour augmenter l'accuracy de la reponse / recherche
         sub_questions = generate_sub_questions(query)     
         #repondre 1 à 1 à tous les sub question avec un prompt rag
@@ -255,6 +257,7 @@ def query(query):
         )
         
         final_answer = final_rag_chain.invoke({"question":query, "context":context})
+        '''
         return final_answer 
     
     
